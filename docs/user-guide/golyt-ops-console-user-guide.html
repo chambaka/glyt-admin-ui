@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GoLyt Ops Console — Admin User Guide</title>
+  <style>
+    :root {
+      --navy: #002050;
+      --navy-soft: #0a3366;
+      --cyan: #00a8e8;
+      --cyan-deep: #0090c8;
+      --cyan-soft: #e6f7fd;
+      --mist: #f5fafc;
+      --text: #243a52;
+      --muted: #5a7188;
+      --line: rgba(0, 32, 80, 0.12);
+      --ok: #1f7a4d;
+      --warn: #b86a12;
+      --err: #b42318;
+      --radius: 14px;
+      --font: "Manrope", "Segoe UI", sans-serif;
+    }
+
+    @page {
+      size: A4;
+      margin: 16mm 14mm 18mm;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 11pt;
+      line-height: 1.5;
+      background: #fff;
+    }
+
+    h1, h2, h3 {
+      color: var(--navy);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.4em;
+    }
+
+    h1 { font-size: 28pt; line-height: 1.1; }
+    h2 { font-size: 18pt; }
+    h3 { font-size: 13pt; }
+
+    p { margin: 0 0 0.8em; }
+    ul { margin: 0 0 1em; padding-left: 1.2em; }
+    li { margin-bottom: 0.35em; }
+
+    .muted { color: var(--muted); }
+    .kicker {
+      color: var(--cyan);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .cover {
+      min-height: 100vh;
+      page-break-after: always;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 28px;
+      border-radius: 18px;
+      background:
+        radial-gradient(900px 420px at 0% 0%, rgba(0, 168, 232, 0.28), transparent 55%),
+        linear-gradient(160deg, var(--navy) 0%, var(--navy-soft) 55%, #001536 100%);
+      color: #fff;
+    }
+
+    .cover .logo-plate {
+      display: inline-flex;
+      background: #fff;
+      border-radius: 12px;
+      padding: 10px 14px;
+      width: fit-content;
+    }
+
+    .cover .logo-plate img { height: 48px; display: block; }
+
+    .cover .route {
+      margin-top: 18px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(230, 247, 253, 0.72);
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .cover h1 {
+      color: #fff;
+      font-size: 34pt;
+      margin-top: 28px;
+      max-width: 12ch;
+    }
+
+    .cover .lede {
+      max-width: 34rem;
+      color: rgba(255, 255, 255, 0.86);
+      font-size: 12.5pt;
+    }
+
+    .cover-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.18);
+      padding-top: 18px;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 0.92rem;
+    }
+
+    .toc, .section, .page {
+      page-break-after: always;
+      padding-top: 4px;
+    }
+
+    .page:last-child { page-break-after: auto; }
+
+    .toc-card, .info-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, #fff, var(--mist));
+      padding: 16px 18px;
+      margin-bottom: 14px;
+    }
+
+    .toc-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      columns: 2;
+      column-gap: 24px;
+    }
+
+    .toc-list li {
+      break-inside: avoid;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .toc-list .num {
+      color: var(--cyan-deep);
+      font-weight: 700;
+      min-width: 1.6em;
+    }
+
+    .shot {
+      margin: 14px 0 8px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 10px 28px rgba(0, 32, 80, 0.08);
+    }
+
+    .shot img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .caption {
+      color: var(--muted);
+      font-size: 0.86rem;
+      margin-top: 6px;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 10px 0 14px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      background: var(--cyan-soft);
+      color: var(--navy);
+      border: 1px solid rgba(0, 168, 232, 0.28);
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .callout {
+      border-left: 4px solid var(--cyan);
+      background: var(--cyan-soft);
+      border-radius: 0 10px 10px 0;
+      padding: 10px 12px;
+      margin: 12px 0;
+    }
+
+    .callout.warn {
+      border-left-color: var(--warn);
+      background: rgba(184, 106, 18, 0.08);
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    @media print {
+      .cover { min-height: auto; height: 250mm; }
+      a { color: inherit; text-decoration: none; }
+    }
+  </style>
+</head>
+<body>
+  <section class="cover">
+    <div>
+      <div class="logo-plate">
+        <img src="screenshots/logo.png" alt="GoLyt" />
+      </div>
+      <div class="route">Kilimanjaro → Zanzibar ops</div>
+      <h1>Ops Console Admin User Guide</h1>
+      <p class="lede">
+        A practical walkthrough of every menu available after an ADMIN signs in to the
+        GoLyt operations console — from corridor custody to staff administration.
+      </p>
+    </div>
+    <div class="cover-meta">
+      <div>
+        <strong>Audience</strong><br />
+        Operations lead / ADMIN role
+      </div>
+      <div>
+        <strong>Product</strong><br />
+        GoLyt Ops Console (web)
+      </div>
+      <div>
+        <strong>Default admin</strong><br />
+        lead@golyt.co.tz
+      </div>
+      <div>
+        <strong>Version</strong><br />
+        November 2026
+      </div>
+    </div>
+  </section>
+
+  <section class="toc">
+    <div class="kicker">Contents</div>
+    <h2>What’s in this guide</h2>
+    <p class="muted">Each chapter matches a left-rail menu item, with a live screenshot and what you can do there.</p>
+    <div class="toc-card">
+      <ol class="toc-list">
+        <li><span><span class="num">01</span> Sign in</span></li>
+        <li><span><span class="num">02</span> Dashboard</span></li>
+        <li><span><span class="num">03</span> Workload</span></li>
+        <li><span><span class="num">04</span> Exceptions</span></li>
+        <li><span><span class="num">05</span> Support</span></li>
+        <li><span><span class="num">06</span> Bags</span></li>
+        <li><span><span class="num">07</span> Bookings</span></li>
+        <li><span><span class="num">08</span> Manifests</span></li>
+        <li><span><span class="num">09</span> Payments</span></li>
+        <li><span><span class="num">10</span> Facilities</span></li>
+        <li><span><span class="num">11</span> Catalog</span></li>
+        <li><span><span class="num">12</span> Reports</span></li>
+        <li><span><span class="num">13</span> Audits</span></li>
+        <li><span><span class="num">14</span> Users</span></li>
+      </ol>
+    </div>
+    <div class="info-card">
+      <h3>Before you start</h3>
+      <ul>
+        <li>Open the ops console in a browser (local default: <strong>http://localhost:5180</strong>).</li>
+        <li>Only <strong>ADMIN</strong> and <strong>READONLY</strong> accounts use this web console. KIA / Zanzibar officers use the phone app.</li>
+        <li>Every staff account needs a valid Tanzania <strong>phone number</strong> for SMS password delivery (same notification platform as Soleil Nexus).</li>
+        <li>Access tokens last about <strong>15 minutes</strong>; refresh tokens about <strong>8 hours</strong>. If refresh fails, you are signed out automatically.</li>
+        <li>The <strong>Users</strong> menu is visible only to ADMIN. There is <strong>no 2FA</strong> on this console.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Getting started</div>
+    <h2>1. Sign in</h2>
+    <div class="pill-row"><span class="pill">Auth</span><span class="pill">ADMIN / READONLY</span><span class="pill">SMS reset</span></div>
+    <p>The sign-in screen is the first step into the ops console. Use your staff email and password, then choose <strong>Enter console</strong>.</p>
+    <ul>
+      <li><strong>Forgot password</strong> sends a short SMS code to the phone on your account (not an email link).</li>
+      <li>Enter the SMS code and a new password that meets staff security rules, then sign in again.</li>
+      <li>If an account requires a password change, you must complete that before the menus unlock.</li>
+      <li>Officer accounts (KIA / ZNZ) are blocked here and directed to the phone app.</li>
+    </ul>
+    <div class="callout">
+      Password rules match Nexus staff policy: at least <strong>10 characters</strong>, with uppercase, lowercase, a number, and a special character from
+      <strong>!@#$%^&amp;*</strong>. The password must not include your name/email local-part, and must not be a common password.
+    </div>
+    <div class="shot"><img src="screenshots/guide-01-login.png" alt="Sign in screen" /></div>
+    <p class="caption">Figure 1 — Staff sign-in for the GoLyt ops console.</p>
+    <div class="shot"><img src="screenshots/guide-01b-forgot-sms.png" alt="Forgot password SMS reset" /></div>
+    <p class="caption">Figure 1b — Forgot password: request an SMS code, then set a new password.</p>
+    <div class="shot"><img src="screenshots/guide-01c-change-password.png" alt="Forced password change" /></div>
+    <p class="caption">Figure 1c — Required password change after first login or admin reset, with live rule checklist.</p>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Command</div>
+    <h2>2. Dashboard</h2>
+    <div class="pill-row"><span class="pill">Live snapshot</span><span class="pill">Alerts</span></div>
+    <p>Dashboard is the home view after login. It summarizes custody across the Kilimanjaro → Zanzibar corridor.</p>
+    <ul>
+      <li>Metric cards for received bags, airline readiness, airline custody, Zanzibar storage, ready-for-collection, and open exceptions.</li>
+      <li>Corridor strip showing origin and destination context.</li>
+      <li>Alerts list for seal issues, overdue collections, and other ops warnings.</li>
+    </ul>
+    <div class="callout">Use Dashboard at the start of a shift to see whether the corridor is green or needs immediate attention.</div>
+    <div class="shot"><img src="screenshots/guide-02-dashboard.png" alt="Dashboard" /></div>
+    <p class="caption">Figure 2 — Dashboard with live custody metrics and alerts.</p>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Command</div>
+    <h2>3. Workload</h2>
+    <div class="pill-row"><span class="pill">SLA</span><span class="pill">Staff load</span></div>
+    <p>Workload &amp; SLA shows operational pressure: open exceptions, overdue SLA items, support volume, pending payments, and bags at each end of the corridor.</p>
+    <ul>
+      <li><strong>Refresh</strong> reloads the latest queue.</li>
+      <li><strong>SLA queue</strong> lists bags that need attention, with priority, age, due time, and assignee.</li>
+      <li><strong>Staff load</strong> shows how open exceptions are distributed across officers.</li>
+    </ul>
+    <div class="shot"><img src="screenshots/guide-03-workload.png" alt="Workload" /></div>
+    <p class="caption">Figure 3 — Workload &amp; SLA queue and staff load.</p>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Command</div>
+    <h2>4. Exceptions</h2>
+    <div class="pill-row"><span class="pill">Incidents</span><span class="pill">Resolve</span></div>
+    <p>Exceptions lists bag incidents such as seal mismatch, damage, delay, or uncollected bags.</p>
+    <ul>
+      <li>Columns cover bag code, type, priority, status, and SLA timing.</li>
+      <li>ADMIN can open <strong>Resolve</strong>, add notes, and close an open exception.</li>
+      <li>Overdue rows are highlighted so critical issues stand out.</li>
+    </ul>
+    <div class="shot"><img src="screenshots/guide-04-exceptions.png" alt="Exceptions" /></div>
+    <p class="caption">Figure 4 — Exceptions table with open and resolved items.</p>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Command</div>
+    <h2>5. Support</h2>
+    <div class="pill-row"><span class="pill">Tickets</span><span class="pill">Assign / Resolve</span></div>
+    <p>Support is the customer ticket triage inbox for questions about bag status, collection, or service issues.</p>
+    <ul>
+      <li>Filter by status (All / OPEN / RESOLVED / CLOSED) and refresh the inbox.</li>
+      <li>ADMIN can <strong>Assign</strong> a ticket to a staff member and <strong>Resolve</strong> with notes.</li>
+      <li>Each row shows subject, customer, linked bag, status, assignee, and created time.</li>
+    </ul>
+    <div class="shot"><img src="screenshots/guide-05-support.png" alt="Support" /></div>
+    <p class="caption">Figure 5 — Support inbox for customer tickets.</p>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Corridor</div>
+    <h2>6. Bags</h2>
+    <div class="pill-row"><span class="pill">Search</span><span class="pill">Custody lookup</span></div>
+    <p>Bags is the search console for individual luggage in the corridor.</p>
+    <ul>
+      <li>Search by bag code, customer name, phone, or passport, then press <strong>Search</strong>.</li>
+      <li>Click a row to open bag detail: status, location, seal, storage slot, and share message.</li>
+      <li>Use this when a passenger or airline desk asks “where is this bag right now?”</li>
+    </ul>
+    <div class="shot"><img src="screenshots/guide-06-bags.png" alt="Bags" /></div>
+    <p class="caption">Figure 6 — Bags search results.</p>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Corridor</div>
+    <h2>7. Bookings</h2>
+    <div class="pill-row"><span class="pill">Reservations</span></div>
+    <p>Bookings lists customer reservations moving through the corridor.</p>
+    <ul>
+      <li>See booking number, customer, status, KIA arrival date, Zanzibar travel date, and flight.</li>
+      <li>Use it to confirm whether a payment/booking exists before chasing a missing bag.</li>
+    </ul>
+    <div class="shot"><img src="screenshots/guide-07-bookings.png" alt="Bookings" /></div>
+    <p class="caption">Figure 7 — Bookings list.</p>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Corridor</div>
+    <h2>8. Manifests</h2>
+    <div class="pill-row"><span class="pill">Airline handoff</span><span class="pill">PDF</span></div>
+    <p>Manifests shows flight manifests used for airline handoff between KIA and Zanzibar.</p>
+    <ul>
+      <li>Columns include manifest number, airline, flight, bag count, and status.</li>
+      <li>Download a manifest PDF when desks need a printable handoff list.</li>
+    </ul>
+    <div class="shot"><img src="screenshots/guide-08-manifests.png" alt="Manifests" /></div>
+    <p class="caption">Figure 8 — Manifests list with PDF download.</p>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Corridor</div>
+    <h2>9. Payments</h2>
+    <div class="pill-row"><span class="pill">Money</span><span class="pill">Refunds</span></div>
+    <p>Payments covers provider transactions, receipts, reconcile export, and ADMIN refunds.</p>
+    <ul>
+      <li>Filter by status (Pending, Succeeded, Failed, Refunded, etc.).</li>
+      <li><strong>Export reconcile CSV</strong> for finance reconciliation.</li>
+      <li>Download receipt PDF when a receipt number exists.</li>
+      <li>ADMIN can refund succeeded payments using an optional refund reason.</li>
+    </ul>
+    <div class="shot"><img src="screenshots/guide-09-payments.png" alt="Payments" /></div>
+    <p class="caption">Figure 9 — Payments filters and transaction table.</p>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Admin</div>
+    <h2>10. Facilities</h2>
+    <div class="pill-row"><span class="pill">Locations</span><span class="pill">Storage slots</span></div>
+    <p>Facilities manages physical locations and Zanzibar storage slots.</p>
+    <ul>
+      <li>Maintain location codes such as KIA and ZNZ (airport / hub / desk).</li>
+      <li>Create and enable/disable storage slots used when bags are shelved at destination.</li>
+      <li>Occupied slots show the linked bag code.</li>
+    </ul>
+    <div class="shot"><img src="screenshots/guide-10-facilities.png" alt="Facilities" /></div>
+    <p class="caption">Figure 10 — Facilities locations and storage management.</p>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Admin</div>
+    <h2>11. Catalog</h2>
+    <div class="pill-row"><span class="pill">Services</span><span class="pill">Pricing</span></div>
+    <p>Catalog is the service and pricing board for sellable products (for example door-to-desk custody).</p>
+    <ul>
+      <li>Review service code, name, price, unit, sort order, and active status.</li>
+      <li>ADMIN can create services, set price (amount in minor units + currency + unit), and enable/disable offerings.</li>
+    </ul>
+    <div class="callout warn">Amounts are stored in minor units (for example TZS 50,000.00 is entered as 5000000).</div>
+    <div class="shot"><img src="screenshots/guide-11-catalog.png" alt="Catalog" /></div>
+    <p class="caption">Figure 11 — Service catalog and pricing form.</p>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Admin</div>
+    <h2>12. Reports</h2>
+    <div class="pill-row"><span class="pill">CSV exports</span></div>
+    <p>Reports exports operational CSVs using shared filters.</p>
+    <ul>
+      <li>Set optional <strong>From</strong>, <strong>To</strong>, <strong>Status</strong>, and <strong>Airline</strong> filters once.</li>
+      <li>Download any report: Movements, Manifests, Storage, Exceptions, Daily operations, Collections.</li>
+      <li>Each row explains what the CSV contains before you download.</li>
+    </ul>
+    <div class="shot"><img src="screenshots/guide-12-reports.png" alt="Reports" /></div>
+    <p class="caption">Figure 12 — Reports filters and download list.</p>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Admin</div>
+    <h2>13. Audits</h2>
+    <div class="pill-row"><span class="pill">Traceability</span></div>
+    <p>Audits shows recent operational actions for compliance and troubleshooting.</p>
+    <ul>
+      <li>Set a row limit and refresh or export CSV.</li>
+      <li>Review who did what, where, and the previous/new values when available.</li>
+    </ul>
+    <div class="shot"><img src="screenshots/guide-13-audits.png" alt="Audits" /></div>
+    <p class="caption">Figure 13 — Audits trail of operational actions.</p>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Admin</div>
+    <h2>14. Users</h2>
+    <div class="pill-row"><span class="pill">ADMIN only</span><span class="pill">Staff accounts</span><span class="pill">Phone + SMS</span></div>
+    <p>Users manages staff accounts for the ops console and related roles. Phone numbers are required so passwords can be delivered and reset by SMS.</p>
+    <ul>
+      <li>List existing users with name, email, <strong>phone</strong>, role, location, and active status.</li>
+      <li>Enable or disable accounts from the table.</li>
+      <li>Use <strong>Add user</strong> to create ADMIN, READONLY, KIA_OFFICER, or ZNZ_OFFICER accounts.</li>
+      <li>Provide a Tanzania phone number (for example <code>+2557…</code>). A welcome SMS with login details is queued to that number.</li>
+      <li>Passwords must meet Nexus staff rules. Use <strong>Generate</strong> in the dialog to create a compliant temporary password.</li>
+      <li>New users must change password on first sign-in. Admin password resets also SMS the temporary password to the user’s phone.</li>
+    </ul>
+    <div class="callout">
+      SMS is sent through the same chambaka notification service Nexus uses. If a phone number is missing or SMS is not configured in the environment, create/reset still succeeds but the SMS may not be delivered.
+    </div>
+    <div class="shot"><img src="screenshots/guide-14-users.png" alt="Users list" /></div>
+    <p class="caption">Figure 14 — Users list including phone numbers.</p>
+    <div class="shot"><img src="screenshots/guide-15-users-add-dialog.png" alt="Add user dialog" /></div>
+    <p class="caption">Figure 15 — Add user dialog with required phone, password checklist, and Generate.</p>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Reference</div>
+    <h2>Sign out &amp; session notes</h2>
+    <div class="two-col">
+      <div>
+        <p>Use the door/arrow icon at the bottom of the side rail to sign out. Your local session is cleared immediately.</p>
+        <div class="callout">
+          If the access token expires, the console tries the refresh token. If refresh fails, you are logged out and returned to sign-in with the message
+          <em>“Your session expired. Sign in again.”</em>
+        </div>
+        <h3>Role quick guide</h3>
+        <ul>
+          <li><strong>ADMIN</strong> — full console, including Users, refunds, and most write actions.</li>
+          <li><strong>READONLY</strong> — can view ops data; write actions are blocked.</li>
+          <li><strong>KIA_OFFICER / ZNZ_OFFICER</strong> — phone app roles, not this web console.</li>
+        </ul>
+        <h3>Password &amp; SMS</h3>
+        <ul>
+          <li>Self-serve reset uses a <strong>5-character SMS code</strong> (valid about 10 minutes).</li>
+          <li>Staff passwords follow Nexus complexity rules; this console does <strong>not</strong> use 2FA.</li>
+          <li>Welcome / admin-reset SMS messages include temporary credentials and ask the user to change the password after signing in.</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h3>Need help?</h3>
+        <p class="muted">For environment setup, run the UI with <code>npm run dev</code> and point API traffic to the GoLyt backend on port 8070.</p>
+        <p class="muted">SMS delivery needs the shared notification service (<code>app.notification.*</code> / <code>APP_NOTIFICATION_*</code>) configured the same way as Nexus.</p>
+        <p class="muted">This guide was produced for the GoLyt admin experience using the product navy / cyan theme.</p>
+      </div>
+    </div>
+    <div class="footer-note">
+      GoLyt — Go light. Explore more. · Ops Console Admin User Guide · Confidential internal document
+    </div>
+  </section>
+</body>
+</html>

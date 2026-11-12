@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GoLyt Facilities User Guide</title>
+  <style>
+    :root {
+      --navy: #002050;
+      --navy-soft: #0a3366;
+      --cyan: #00a8e8;
+      --cyan-deep: #0090c8;
+      --cyan-soft: #e6f7fd;
+      --mist: #f5fafc;
+      --text: #243a52;
+      --muted: #5a7188;
+      --line: rgba(0, 32, 80, 0.12);
+      --ok: #1f7a4d;
+      --warn: #b86a12;
+      --err: #b42318;
+      --radius: 14px;
+      --font: "Manrope", "Segoe UI", sans-serif;
+    }
+    @page { size: A4; margin: 16mm 14mm 18mm; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 11pt;
+      line-height: 1.5;
+      background: #fff;
+    }
+    h1, h2, h3 {
+      color: var(--navy);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.4em;
+    }
+    h1 { font-size: 28pt; line-height: 1.1; }
+    h2 { font-size: 18pt; }
+    h3 { font-size: 13pt; }
+    p { margin: 0 0 0.75em; }
+    ul, ol { margin: 0 0 1em; padding-left: 1.2em; }
+    li { margin: 0.28em 0; }
+    code {
+      font-size: 0.92em;
+      background: var(--mist);
+      padding: 0.1em 0.35em;
+      border-radius: 4px;
+    }
+    strong { color: var(--navy); }
+    .muted { color: var(--muted); }
+    .kicker {
+      color: var(--cyan);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .cover {
+      min-height: 250mm;
+      page-break-after: always;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 28px;
+      border-radius: 18px;
+      background:
+        radial-gradient(900px 420px at 0% 0%, rgba(0, 168, 232, 0.28), transparent 55%),
+        linear-gradient(160deg, var(--navy) 0%, var(--navy-soft) 55%, #001536 100%);
+      color: #fff;
+    }
+    .cover .logo-plate {
+      display: inline-flex;
+      background: #fff;
+      border-radius: 12px;
+      padding: 10px 14px;
+      width: fit-content;
+    }
+    .cover .logo-plate img { height: 48px; display: block; }
+    .cover .route {
+      margin-top: 18px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(230, 247, 253, 0.72);
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+    .cover h1 { color: #fff; font-size: 34pt; max-width: 14ch; margin-top: 18px; }
+    .cover .support { max-width: 38ch; color: rgba(255,255,255,0.82); font-size: 12.5pt; }
+    .cover-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      border-top: 1px solid rgba(255,255,255,0.18);
+      padding-top: 16px;
+      color: rgba(255,255,255,0.78);
+      font-size: 0.92rem;
+    }
+    .page, .toc { page-break-after: always; padding-top: 4mm; }
+    .page:last-child { page-break-after: auto; }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 12px; }
+    .pill {
+      border: 1px solid var(--line);
+      background: var(--mist);
+      color: var(--navy);
+      border-radius: 999px;
+      padding: 3px 10px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+    .shot {
+      margin: 12px 0 4px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--mist);
+    }
+    .shot img { width: 100%; display: block; }
+    .caption { color: var(--muted); font-size: 0.85rem; margin: 0 0 14px; }
+    .callout, .info-card {
+      background: linear-gradient(180deg, #f7fbfe, var(--mist));
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin: 12px 0;
+    }
+    .callout { border-left: 4px solid var(--cyan); }
+    .callout.warn { border-left-color: var(--warn); }
+    .callout.danger { border-left-color: var(--err); }
+    .toc-card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 10px 16px;
+      background: #fff;
+    }
+    .toc-list { list-style: none; padding: 0; margin: 0; }
+    .toc-list li {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .toc-list li:last-child { border-bottom: 0; }
+    .num {
+      display: inline-flex;
+      width: 1.8em;
+      color: var(--cyan);
+      font-weight: 700;
+    }
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin: 14px 0 18px;
+    }
+    .flow-step {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px 10px;
+      background: #fff;
+      text-align: center;
+    }
+    .flow-step strong {
+      display: block;
+      font-size: 0.85rem;
+      margin-bottom: 4px;
+    }
+    .flow-step span {
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+    .two-col { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 16px; }
+    .footer-note {
+      margin-top: 18px;
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+    @media print {
+      .cover { min-height: 260mm; }
+    }
+  </style>
+</head>
+<body>
+  <section class="cover">
+    <div>
+      <div class="logo-plate">
+        <img src="screenshots/logo.png" alt="GoLyt" />
+      </div>
+      <div class="route">Kilimanjaro → Zanzibar · Locations &amp; storage</div>
+    </div>
+    <div>
+      <div class="kicker" style="color: var(--cyan);">Ops guide</div>
+      <h1>Facilities User Guide</h1>
+      <p class="support">
+        How admins maintain corridor locations (KIA, ZNZ, and more) and storage slots
+        used when bags are shelved at destination — including safe delete rules.
+      </p>
+    </div>
+    <div class="cover-meta">
+      <div><strong style="color:#fff">Audience</strong><br />Ops console ADMIN users</div>
+      <div><strong style="color:#fff">Version</strong><br />November 2026</div>
+    </div>
+  </section>
+
+  <section class="toc">
+    <div class="kicker">Contents</div>
+    <h2>What’s in this guide</h2>
+    <p class="muted">Facilities is the ops console board for physical locations and Zanzibar storage slots.</p>
+    <div class="toc-card">
+      <ol class="toc-list">
+        <li><span><span class="num">01</span> What Facilities covers</span></li>
+        <li><span><span class="num">02</span> Facilities list &amp; CRUD</span></li>
+        <li><span><span class="num">03</span> Storage slots</span></li>
+        <li><span><span class="num">04</span> Integrity &amp; delete rules</span></li>
+        <li><span><span class="num">05</span> Roles, tips &amp; related menus</span></li>
+      </ol>
+    </div>
+    <div class="info-card">
+      <h3>Before you start</h3>
+      <ul>
+        <li>Open the ops console (<code>glyt-admin-ui</code>) and sign in as <strong>ADMIN</strong>.</li>
+        <li>READONLY users can view the lists but cannot add, edit, or delete.</li>
+        <li>Facility codes such as <code>KIA</code> and <code>ZNZ</code> are referenced by staff, bags, and storage — treat them as durable identifiers.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Concepts</div>
+    <h2>1. What Facilities covers</h2>
+    <div class="pill-row">
+      <span class="pill">Locations</span>
+      <span class="pill">Storage slots</span>
+      <span class="pill">Corridor ops</span>
+    </div>
+    <p>
+      The Facilities page has two boards: <strong>Facilities</strong> (physical locations on the corridor)
+      and <strong>Storage slots</strong> (shelf / bin codes used when bags are stored, typically at ZNZ).
+    </p>
+    <div class="flow">
+      <div class="flow-step"><strong>Location</strong><span>KIA, ZNZ, desk…</span></div>
+      <div class="flow-step"><strong>Staff / bags</strong><span>Bind to location code</span></div>
+      <div class="flow-step"><strong>Storage slot</strong><span>Shelf under a facility</span></div>
+      <div class="flow-step"><strong>Occupied</strong><span>Shows linked bag</span></div>
+    </div>
+    <ul>
+      <li><strong>Code</strong> — short stable key (e.g. <code>KIA</code>, <code>ZNZ</code>). Set at create; cannot change later.</li>
+      <li><strong>Type</strong> — <code>AIRPORT</code>, <code>HUB</code>, <code>DESK</code>, or <code>OTHER</code>.</li>
+      <li><strong>Active</strong> — inactive facilities stay in history but should not be used for new work.</li>
+      <li><strong>Storage slot</strong> — belongs to one facility; may be occupied by a bag.</li>
+    </ul>
+    <div class="callout">
+      Prefer <strong>deactivate</strong> over delete when a code is already in live operations. Deletes only succeed when nothing still references the facility or slot.
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Ops console</div>
+    <h2>2. Facilities list &amp; CRUD</h2>
+    <div class="pill-row">
+      <span class="pill">ADMIN only for write</span>
+      <span class="pill">Add / Edit / Delete</span>
+      <span class="pill">Refresh</span>
+    </div>
+    <p>
+      Open <strong>Facilities</strong> in the left rail. The top table lists location code, name, type, and active status.
+      Use <strong>Refresh</strong> to reload both facilities and storage from the API.
+    </p>
+    <h3>Add a facility</h3>
+    <ol>
+      <li>Choose <strong>Add facility</strong>.</li>
+      <li>Enter a unique <strong>Code</strong>, display <strong>Name</strong>, and <strong>Type</strong>.</li>
+      <li>Leave <strong>Active</strong> checked unless you are pre-creating a dormant site.</li>
+      <li>Confirm with <strong>Create facility</strong>. A success notice confirms the save.</li>
+    </ol>
+    <h3>Edit a facility</h3>
+    <ul>
+      <li>Use the pencil icon on a row.</li>
+      <li>You can change name, type, and active flag.</li>
+      <li>Code is locked after create (staff, storage, and bags already reference it).</li>
+    </ul>
+    <h3>Delete a facility</h3>
+    <ul>
+      <li>Use the trash icon. Confirm in the danger dialog.</li>
+      <li>Delete only works if no staff, storage slots, or bags still reference the facility.</li>
+      <li>If blocked, an error notice explains why — clean up references or deactivate instead.</li>
+    </ul>
+    <div class="shot"><img src="screenshots/guide-10-facilities.png" alt="Facilities list in ops console" /></div>
+    <p class="caption">Figure 1 — Facilities and storage slots in the ops console.</p>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Storage</div>
+    <h2>3. Storage slots</h2>
+    <div class="pill-row">
+      <span class="pill">Usually ZNZ</span>
+      <span class="pill">Occupied + bag code</span>
+      <span class="pill">Add slot</span>
+    </div>
+    <p>
+      Storage slots are shelf/bin codes under a facility. Officers assign bags into free slots when
+      receiving into destination storage (phone ops app). The console shows occupancy and the linked bag.
+    </p>
+    <h3>Add a slot</h3>
+    <ol>
+      <li>Choose <strong>Add slot</strong> on the Storage slots card (ADMIN).</li>
+      <li>Enter a unique slot <strong>Code</strong> (e.g. <code>A-01</code>).</li>
+      <li>Pick the parent <strong>Facility</strong> (KIA / ZNZ / other configured codes).</li>
+      <li>Set Active and save with <strong>Create slot</strong>.</li>
+    </ol>
+    <h3>Edit a slot</h3>
+    <ul>
+      <li>Pencil icon — change facility assignment and active flag.</li>
+      <li>Slot code is locked after create.</li>
+    </ul>
+    <h3>Delete a slot</h3>
+    <ul>
+      <li>Trash is disabled while the slot is <strong>occupied</strong>.</li>
+      <li>If you try while occupied, a warning notice appears: free the bag first.</li>
+      <li>Empty slots can be deleted after the confirm dialog.</li>
+    </ul>
+    <div class="callout warn">
+      Occupied slots show <strong>Yes</strong> and the bag code (e.g. <code>BAG-0038</code>). Do not delete or deactivate a slot that still holds a bag until custody moves on.
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Integrity</div>
+    <h2>4. Integrity &amp; delete rules</h2>
+    <div class="pill-row">
+      <span class="pill">Referential safety</span>
+      <span class="pill">Confirm dialogs</span>
+      <span class="pill">Notices</span>
+    </div>
+    <p>
+      GoLyt blocks deletes that would break operational data. Confirm and error dialogs keep the desk
+      from removing live references by accident.
+    </p>
+    <div class="two-col">
+      <div>
+        <h3>Facility delete blocked when</h3>
+        <ul>
+          <li>Staff users are still assigned to that location code.</li>
+          <li>Storage slots still belong to that facility.</li>
+          <li>Bags still reference that facility / location.</li>
+        </ul>
+        <h3>Storage delete blocked when</h3>
+        <ul>
+          <li>The slot is occupied (a bag is shelved there).</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h3>Safer alternatives</h3>
+        <ul>
+          <li>Uncheck <strong>Active</strong> to retire a facility or slot without losing history.</li>
+          <li>Move or release bags before deleting storage.</li>
+          <li>Reassign staff location before removing a facility code.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout danger">
+      Never force-delete through the database. Use the console so referential checks and audit-friendly API paths run.
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Reference</div>
+    <h2>5. Roles, tips &amp; related menus</h2>
+    <div class="two-col">
+      <div>
+        <h3>Who can do what</h3>
+        <ul>
+          <li><strong>ADMIN</strong> — add, edit, delete facilities and storage slots.</li>
+          <li><strong>READONLY</strong> — view both tables; no write actions.</li>
+          <li><strong>KIA / ZNZ officers</strong> — use locations and slots from the phone app during intake, receive, and shelving; they do not manage the Facilities board.</li>
+        </ul>
+        <h3>Field quick reference</h3>
+        <ul>
+          <li>Facility types: AIRPORT · HUB · DESK · OTHER</li>
+          <li>Facility code immutable after create</li>
+          <li>Storage code immutable after create</li>
+          <li>Occupied → linked bag code shown</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h3>Quick tips</h3>
+        <ul>
+          <li>Create storage slots before peak ZNZ receiving days.</li>
+          <li>Use clear slot codes (row-shelf) so officers can find bags quickly.</li>
+          <li>Deactivate unused slots instead of deleting if you may reuse them.</li>
+          <li>Keep KIA and ZNZ active — they anchor the pilot corridor.</li>
+        </ul>
+        <h3>Related menus</h3>
+        <p class="muted">Users (staff location) · Bags · Manifests · Exceptions · Reports</p>
+      </div>
+    </div>
+    <div class="footer-note">
+      GoLyt — Go light. Explore more. · Facilities User Guide · Kilimanjaro → Zanzibar pilot · Confidential internal document
+    </div>
+  </section>
+</body>
+</html>

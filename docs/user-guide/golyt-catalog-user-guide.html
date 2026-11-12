@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GoLyt Catalog User Guide</title>
+  <style>
+    :root {
+      --navy: #002050;
+      --navy-soft: #0a3366;
+      --cyan: #00a8e8;
+      --cyan-deep: #0090c8;
+      --cyan-soft: #e6f7fd;
+      --mist: #f5fafc;
+      --text: #243a52;
+      --muted: #5a7188;
+      --line: rgba(0, 32, 80, 0.12);
+      --ok: #1f7a4d;
+      --warn: #b86a12;
+      --err: #b42318;
+      --radius: 14px;
+      --font: "Manrope", "Segoe UI", sans-serif;
+    }
+    @page { size: A4; margin: 16mm 14mm 18mm; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 11pt;
+      line-height: 1.5;
+      background: #fff;
+    }
+    h1, h2, h3 {
+      color: var(--navy);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.4em;
+    }
+    h1 { font-size: 28pt; line-height: 1.1; }
+    h2 { font-size: 18pt; }
+    h3 { font-size: 13pt; }
+    p { margin: 0 0 0.75em; }
+    ul, ol { margin: 0 0 1em; padding-left: 1.2em; }
+    li { margin: 0.28em 0; }
+    code {
+      font-size: 0.92em;
+      background: var(--mist);
+      padding: 0.1em 0.35em;
+      border-radius: 4px;
+    }
+    strong { color: var(--navy); }
+    .muted { color: var(--muted); }
+    .kicker {
+      color: var(--cyan);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .cover {
+      min-height: 250mm;
+      page-break-after: always;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 28px;
+      border-radius: 18px;
+      background:
+        radial-gradient(900px 420px at 0% 0%, rgba(0, 168, 232, 0.28), transparent 55%),
+        linear-gradient(160deg, var(--navy) 0%, var(--navy-soft) 55%, #001536 100%);
+      color: #fff;
+    }
+    .cover .logo-plate {
+      display: inline-flex;
+      background: #fff;
+      border-radius: 12px;
+      padding: 10px 14px;
+      width: fit-content;
+    }
+    .cover .logo-plate img { height: 48px; display: block; }
+    .cover .route {
+      margin-top: 18px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(230, 247, 253, 0.72);
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+    .cover h1 { color: #fff; font-size: 34pt; max-width: 14ch; margin-top: 18px; }
+    .cover .support { max-width: 38ch; color: rgba(255,255,255,0.82); font-size: 12.5pt; }
+    .cover-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      border-top: 1px solid rgba(255,255,255,0.18);
+      padding-top: 16px;
+      color: rgba(255,255,255,0.78);
+      font-size: 0.92rem;
+    }
+    .page, .toc { page-break-after: always; padding-top: 4mm; }
+    .page:last-child { page-break-after: auto; }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 12px; }
+    .pill {
+      border: 1px solid var(--line);
+      background: var(--mist);
+      color: var(--navy);
+      border-radius: 999px;
+      padding: 3px 10px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+    .shot {
+      margin: 12px 0 4px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--mist);
+    }
+    .shot img { width: 100%; display: block; }
+    .caption { color: var(--muted); font-size: 0.85rem; margin: 0 0 14px; }
+    .callout, .info-card {
+      background: linear-gradient(180deg, #f7fbfe, var(--mist));
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin: 12px 0;
+    }
+    .callout { border-left: 4px solid var(--cyan); }
+    .callout.warn { border-left-color: var(--warn); }
+    .toc-card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 10px 16px;
+      background: #fff;
+    }
+    .toc-list { list-style: none; padding: 0; margin: 0; }
+    .toc-list li {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .toc-list li:last-child { border-bottom: 0; }
+    .num {
+      display: inline-flex;
+      width: 1.8em;
+      color: var(--cyan);
+      font-weight: 700;
+    }
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin: 14px 0 18px;
+    }
+    .flow-step {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px 10px;
+      background: #fff;
+      text-align: center;
+    }
+    .flow-step strong {
+      display: block;
+      font-size: 0.85rem;
+      margin-bottom: 4px;
+    }
+    .flow-step span {
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+    .two-col { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 16px; }
+    .price-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0 14px;
+      font-size: 0.92rem;
+    }
+    .price-table th,
+    .price-table td {
+      border: 1px solid var(--line);
+      padding: 8px 10px;
+      text-align: left;
+    }
+    .price-table th {
+      background: var(--mist);
+      color: var(--navy);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .footer-note {
+      margin-top: 18px;
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+    @media print {
+      .cover { min-height: 260mm; }
+    }
+  </style>
+</head>
+<body>
+  <section class="cover">
+    <div>
+      <div class="logo-plate">
+        <img src="screenshots/logo.png" alt="GoLyt" />
+      </div>
+      <div class="route">Kilimanjaro → Zanzibar · Services &amp; pricing</div>
+    </div>
+    <div>
+      <div class="kicker" style="color: var(--cyan);">Ops guide</div>
+      <h1>Catalog User Guide</h1>
+      <p class="support">
+        How admins maintain sellable services and prices in the ops console —
+        including minor-unit amounts, units, and enable/disable for customer quotes.
+      </p>
+    </div>
+    <div class="cover-meta">
+      <div><strong style="color:#fff">Audience</strong><br />Ops console ADMIN users</div>
+      <div><strong style="color:#fff">Version</strong><br />November 2026</div>
+    </div>
+  </section>
+
+  <section class="toc">
+    <div class="kicker">Contents</div>
+    <h2>What’s in this guide</h2>
+    <p class="muted">Catalog is the service and pricing board for products sold on the corridor (for example door-to-desk custody).</p>
+    <div class="toc-card">
+      <ol class="toc-list">
+        <li><span><span class="num">01</span> What Catalog covers</span></li>
+        <li><span><span class="num">02</span> Reading the service list</span></li>
+        <li><span><span class="num">03</span> Create a service</span></li>
+        <li><span><span class="num">04</span> Set price &amp; enable/disable</span></li>
+        <li><span><span class="num">05</span> Roles, tips &amp; related menus</span></li>
+      </ol>
+    </div>
+    <div class="info-card">
+      <h3>Before you start</h3>
+      <ul>
+        <li>Open the ops console and sign in as <strong>ADMIN</strong> for create / price / enable actions.</li>
+        <li>READONLY and officers can view the list but cannot change offerings.</li>
+        <li>Prices are stored in <strong>minor units</strong> (cents / cents-equivalent) — see the conversion table in section 4.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Concepts</div>
+    <h2>1. What Catalog covers</h2>
+    <div class="pill-row">
+      <span class="pill">Services</span>
+      <span class="pill">Pricing</span>
+      <span class="pill">Quotes</span>
+    </div>
+    <p>
+      The Catalog page (labelled <strong>Service catalog</strong>) lists sellable services and their active prices.
+      Customer quotes and bookings draw from active services only.
+    </p>
+    <div class="flow">
+      <div class="flow-step"><strong>Service</strong><span>Code + name</span></div>
+      <div class="flow-step"><strong>Price</strong><span>Minor units + currency</span></div>
+      <div class="flow-step"><strong>Unit</strong><span>Per bag / booking / flat</span></div>
+      <div class="flow-step"><strong>Active</strong><span>Shown in quotes</span></div>
+    </div>
+    <ul>
+      <li><strong>Code</strong> — short stable key (e.g. <code>DOOR_TO_DESK</code>, <code>OVERWEIGHT</code>).</li>
+      <li><strong>Name / description</strong> — what desks and customers see.</li>
+      <li><strong>Sort order</strong> — lower numbers appear first in lists.</li>
+      <li><strong>Unit</strong> — <code>PER_BAG</code>, <code>PER_BOOKING</code>, or <code>FLAT</code>.</li>
+    </ul>
+    <div class="callout">
+      Disable a service instead of deleting it when you need to retire an offering without losing history.
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Ops console</div>
+    <h2>2. Reading the service list</h2>
+    <div class="pill-row">
+      <span class="pill">ADMIN write</span>
+      <span class="pill">Refresh</span>
+      <span class="pill">Active / Inactive</span>
+    </div>
+    <p>
+      Open <strong>Catalog</strong> in the left rail. The table shows code, name (with description),
+      formatted price, unit, sort order, and status.
+    </p>
+    <ul>
+      <li>Use <strong>Refresh</strong> to reload services from the API.</li>
+      <li>Price is shown as currency + major units (e.g. <code>TZS 50,000</code> from minor amount <code>5000000</code>).</li>
+      <li>ADMIN rows expose <strong>Disable / Enable</strong> and <strong>Set price</strong>.</li>
+    </ul>
+    <div class="shot"><img src="screenshots/guide-11-catalog.png" alt="Service catalog in ops console" /></div>
+    <p class="caption">Figure 1 — Service catalog list with pricing and new-service form.</p>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Create</div>
+    <h2>3. Create a service</h2>
+    <div class="pill-row">
+      <span class="pill">ADMIN only</span>
+      <span class="pill">New service form</span>
+    </div>
+    <p>At the bottom of the Catalog page, ADMIN users see the <strong>New service</strong> form.</p>
+    <ol>
+      <li>Enter a unique <strong>Code</strong> (use UPPER_SNAKE for consistency).</li>
+      <li>Enter display <strong>Name</strong> and optional <strong>Description</strong>.</li>
+      <li>Set <strong>Amount (minor units)</strong>, <strong>Currency</strong> (usually TZS), and <strong>Unit</strong>.</li>
+      <li>Set <strong>Sort order</strong> (e.g. 10, 20, 30) so primary products appear first.</li>
+      <li>Choose <strong>Create service</strong>. A success notice confirms the save.</li>
+    </ol>
+    <div class="callout warn">
+      Amount is <strong>not</strong> entered as whole shillings. TZS 50,000.00 → <code>5000000</code> minor units
+      (multiply by 100).
+    </div>
+    <div class="info-card">
+      <h3>Typical pilot offerings</h3>
+      <ul>
+        <li><code>DOOR_TO_DESK</code> — corridor custody KIA → ZNZ</li>
+        <li><code>OVERWEIGHT</code> — extra handling above threshold</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Price &amp; status</div>
+    <h2>4. Set price &amp; enable/disable</h2>
+    <div class="pill-row">
+      <span class="pill">Set price</span>
+      <span class="pill">Enable / Disable</span>
+      <span class="pill">Confirm dialogs</span>
+    </div>
+    <h3>Update price</h3>
+    <ol>
+      <li>Choose <strong>Set price</strong> on a service row.</li>
+      <li>The <strong>Update price</strong> form appears with amount (minor units), currency, and unit.</li>
+      <li>Save with <strong>Save price</strong>, or <strong>Cancel</strong> to discard.</li>
+    </ol>
+    <table class="price-table">
+      <thead>
+        <tr>
+          <th>Display amount</th>
+          <th>Enter as minor units</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>TZS 15,000.00</td><td><code>1500000</code></td></tr>
+        <tr><td>TZS 50,000.00</td><td><code>5000000</code></td></tr>
+        <tr><td>TZS 75,000.00</td><td><code>7500000</code></td></tr>
+      </tbody>
+    </table>
+    <h3>Enable / disable</h3>
+    <ul>
+      <li><strong>Disable</strong> — service stays in Catalog but is hidden from new quotes. Confirm in the danger dialog.</li>
+      <li><strong>Enable</strong> — brings the service back for selling. Confirm in the warning dialog.</li>
+      <li>Inactive services remain visible to ADMIN for audit and re-pricing.</li>
+    </ul>
+    <div class="callout">
+      Changing price does not rewrite historical bookings or payments — it affects new quotes going forward.
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Reference</div>
+    <h2>5. Roles, tips &amp; related menus</h2>
+    <div class="two-col">
+      <div>
+        <h3>Who can do what</h3>
+        <ul>
+          <li><strong>ADMIN</strong> — create services, set price, enable/disable.</li>
+          <li><strong>READONLY / officers</strong> — view the catalog list only.</li>
+        </ul>
+        <h3>Field quick reference</h3>
+        <ul>
+          <li>Units: PER_BAG · PER_BOOKING · FLAT</li>
+          <li>Currency default: TZS</li>
+          <li>Amount: integer minor units (×100 for TZS)</li>
+          <li>Sort: lower = earlier in lists</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h3>Quick tips</h3>
+        <ul>
+          <li>Keep door-to-desk as the primary sorted service.</li>
+          <li>Double-check minor units before Save price.</li>
+          <li>Disable seasonal add-ons instead of inventing one-off codes.</li>
+          <li>Refresh after another admin changes prices.</li>
+        </ul>
+        <h3>Related menus</h3>
+        <p class="muted">Bookings · Payments · Reports · Audits</p>
+      </div>
+    </div>
+    <div class="footer-note">
+      GoLyt — Go light. Explore more. · Catalog User Guide · Kilimanjaro → Zanzibar pilot · Confidential internal document
+    </div>
+  </section>
+</body>
+</html>

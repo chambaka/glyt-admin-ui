@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GoLyt Manifests User Guide</title>
+  <style>
+    :root {
+      --navy: #002050;
+      --navy-soft: #0a3366;
+      --cyan: #00a8e8;
+      --cyan-deep: #0090c8;
+      --cyan-soft: #e6f7fd;
+      --mist: #f5fafc;
+      --text: #243a52;
+      --muted: #5a7188;
+      --line: rgba(0, 32, 80, 0.12);
+      --ok: #1f7a4d;
+      --warn: #b86a12;
+      --err: #b42318;
+      --radius: 14px;
+      --font: "Manrope", "Segoe UI", sans-serif;
+    }
+    @page { size: A4; margin: 16mm 14mm 18mm; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 11pt;
+      line-height: 1.5;
+      background: #fff;
+    }
+    h1, h2, h3 {
+      color: var(--navy);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.4em;
+    }
+    h1 { font-size: 28pt; line-height: 1.1; }
+    h2 { font-size: 18pt; }
+    h3 { font-size: 13pt; }
+    p { margin: 0 0 0.75em; }
+    ul, ol { margin: 0 0 1em; padding-left: 1.2em; }
+    li { margin: 0.28em 0; }
+    code {
+      font-size: 0.92em;
+      background: var(--mist);
+      padding: 0.1em 0.35em;
+      border-radius: 4px;
+    }
+    strong { color: var(--navy); }
+    .muted { color: var(--muted); }
+    .kicker {
+      color: var(--cyan);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .cover {
+      min-height: 250mm;
+      page-break-after: always;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 28px;
+      border-radius: 18px;
+      background:
+        radial-gradient(900px 420px at 0% 0%, rgba(0, 168, 232, 0.28), transparent 55%),
+        linear-gradient(160deg, var(--navy) 0%, var(--navy-soft) 55%, #001536 100%);
+      color: #fff;
+    }
+    .cover .logo-plate {
+      display: inline-flex;
+      background: #fff;
+      border-radius: 12px;
+      padding: 10px 14px;
+      width: fit-content;
+    }
+    .cover .logo-plate img { height: 48px; display: block; }
+    .cover .route {
+      margin-top: 18px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(230, 247, 253, 0.72);
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+    .cover h1 { color: #fff; font-size: 34pt; max-width: 14ch; margin-top: 18px; }
+    .cover .support { max-width: 38ch; color: rgba(255,255,255,0.82); font-size: 12.5pt; }
+    .cover-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      border-top: 1px solid rgba(255,255,255,0.18);
+      padding-top: 16px;
+      color: rgba(255,255,255,0.78);
+      font-size: 0.92rem;
+    }
+    .page, .toc { page-break-after: always; padding-top: 4mm; }
+    .page:last-child { page-break-after: auto; }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 12px; }
+    .pill {
+      border: 1px solid var(--line);
+      background: var(--mist);
+      color: var(--navy);
+      border-radius: 999px;
+      padding: 3px 10px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+    .shot {
+      margin: 12px 0 4px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--mist);
+    }
+    .shot img { width: 100%; display: block; }
+    .caption { color: var(--muted); font-size: 0.85rem; margin: 0 0 14px; }
+    .callout, .info-card {
+      background: linear-gradient(180deg, #f7fbfe, var(--mist));
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin: 12px 0;
+    }
+    .callout { border-left: 4px solid var(--cyan); }
+    .toc-card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 10px 16px;
+      background: #fff;
+    }
+    .toc-list { list-style: none; padding: 0; margin: 0; }
+    .toc-list li {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .toc-list li:last-child { border-bottom: 0; }
+    .num {
+      display: inline-flex;
+      width: 1.8em;
+      color: var(--cyan);
+      font-weight: 700;
+    }
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin: 14px 0 18px;
+    }
+    .flow-step {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px 10px;
+      background: #fff;
+      text-align: center;
+    }
+    .flow-step strong {
+      display: block;
+      font-size: 0.85rem;
+      margin-bottom: 4px;
+    }
+    .flow-step span {
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+    .two-col { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 16px; }
+    .footer-note {
+      margin-top: 18px;
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+    @media print {
+      .cover { min-height: 260mm; }
+    }
+  </style>
+</head>
+<body>
+  <section class="cover">
+    <div>
+      <div class="logo-plate">
+        <img src="screenshots/logo.png" alt="GoLyt" />
+      </div>
+      <div class="route">Kilimanjaro → Zanzibar · Airline handoff</div>
+    </div>
+    <div>
+      <div class="kicker" style="color: var(--cyan);">Ops guide</div>
+      <h1>Manifests User Guide</h1>
+      <p class="support">
+        How GoLyt builds, finalises, and hands over sealed bags to the airline —
+        and how desks download printable manifests from the ops console.
+      </p>
+    </div>
+    <div class="cover-meta">
+      <div><strong style="color:#fff">Audience</strong><br />Ops console users and KIA / ZNZ officers</div>
+      <div><strong style="color:#fff">Version</strong><br />November 2026</div>
+    </div>
+  </section>
+
+  <section class="toc">
+    <div class="kicker">Contents</div>
+    <h2>What’s in this guide</h2>
+    <p class="muted">Manifests are the custody handoff list between Kilimanjaro intake and Zanzibar receiving.</p>
+    <div class="toc-card">
+      <ol class="toc-list">
+        <li><span><span class="num">01</span> What a manifest is</span></li>
+        <li><span><span class="num">02</span> Ops console: list &amp; PDF</span></li>
+        <li><span><span class="num">03</span> Phone app lifecycle (KIA)</span></li>
+        <li><span><span class="num">04</span> After airline handover (ZNZ)</span></li>
+        <li><span><span class="num">05</span> Roles, rules &amp; tips</span></li>
+      </ol>
+    </div>
+    <div class="info-card">
+      <h3>Before you start</h3>
+      <ul>
+        <li><strong>Ops console</strong> (<code>glyt-admin-ui</code>) — ADMIN / READONLY view manifests and download PDFs.</li>
+        <li><strong>Phone ops app</strong> (<code>glyt-app</code>) — KIA officers create drafts, add sealed bags, finalise, and hand over.</li>
+        <li>Bags must be <strong>SEALED</strong> with a seal number before they can join a manifest.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Concepts</div>
+    <h2>1. What a manifest is</h2>
+    <div class="pill-row">
+      <span class="pill">Airline handoff</span>
+      <span class="pill">Sealed custody</span>
+      <span class="pill">JRO → ZNZ</span>
+    </div>
+    <p>
+      A manifest is the flight-level list of sealed bags moving from Kilimanjaro (KIA / JRO)
+      toward Zanzibar under airline custody. It is not GPS tracking — it is a signed custody record.
+    </p>
+    <div class="flow">
+      <div class="flow-step"><strong>DRAFT</strong><span>Build bag list</span></div>
+      <div class="flow-step"><strong>FINALISED</strong><span>Locked for airline</span></div>
+      <div class="flow-step"><strong>HANDED_OVER</strong><span>With airline</span></div>
+      <div class="flow-step"><strong>Follow-up</strong><span>Flag missing</span></div>
+    </div>
+    <ul>
+      <li>Manifest numbers look like <code>MF-JRO-ZNZ-#####</code>.</li>
+      <li>Default route is <strong>JRO-ZNZ</strong>.</li>
+      <li>Each bag can sit on only one manifest.</li>
+      <li>Printable PDF is available for desk handoff and archive.</li>
+    </ul>
+    <div class="callout">
+      Only <strong>draft</strong> manifests can be edited (add / remove bags). Finalise locks the list before airline handover.
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Ops console</div>
+    <h2>2. Manifests in the ops console</h2>
+    <div class="pill-row">
+      <span class="pill">ADMIN / READONLY</span>
+      <span class="pill">List</span>
+      <span class="pill">PDF download</span>
+    </div>
+    <p>
+      Open <strong>Manifests</strong> in the left rail. The page lists recent manifests with airline,
+      flight, bag count, and status.
+    </p>
+    <ul>
+      <li>Review corridor handoffs without opening the phone app.</li>
+      <li>Choose <strong>PDF</strong> on a row to download the printable manifest for that flight.</li>
+      <li>Use the PDF at the KIA desk, for airline counters, or for audit archives.</li>
+    </ul>
+    <div class="shot"><img src="screenshots/guide-08-manifests.png" alt="Manifests list in ops console" /></div>
+    <p class="caption">Figure 1 — Ops console Manifests list with PDF action.</p>
+    <div class="callout">
+      Creating and editing manifests is done in the <strong>GoLyt phone ops app</strong> (KIA officers).
+      The console focuses on visibility and printable handoff documents.
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Phone app · KIA</div>
+    <h2>3. Manifest lifecycle on the phone app</h2>
+    <div class="pill-row">
+      <span class="pill">KIA_OFFICER</span>
+      <span class="pill">ADMIN</span>
+      <span class="pill">Create → Finalise → Handover</span>
+    </div>
+    <h3>Create a draft</h3>
+    <ol>
+      <li>Open <strong>Menu → Manifests</strong>.</li>
+      <li>Start a new manifest and enter airline, flight number, date, and optional notes.</li>
+      <li>GoLyt assigns a number such as <code>MF-JRO-ZNZ-00042</code>.</li>
+    </ol>
+    <h3>Add sealed bags</h3>
+    <ol>
+      <li>Open the draft and select eligible bags (status <strong>SEALED</strong> with a seal number).</li>
+      <li>Add them to the manifest. Remove a bag only while status is still <strong>DRAFT</strong>.</li>
+      <li>A bag already on another manifest cannot be added again.</li>
+    </ol>
+    <h3>Finalise</h3>
+    <ul>
+      <li>When the bag list is complete, <strong>Finalise</strong> the manifest.</li>
+      <li>Status becomes <strong>FINALISED</strong>. Bag list changes are no longer allowed.</li>
+    </ul>
+    <h3>Airline handover</h3>
+    <ul>
+      <li>After finalise, record <strong>Handover</strong> when bags leave with the airline.</li>
+      <li>Status becomes <strong>HANDED_OVER</strong> (airline custody toward Zanzibar).</li>
+    </ul>
+    <div class="callout">
+      Download the PDF from the ops console (or generate from the API) so the airline desk has a paper copy matching the sealed bag set.
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Phone app · ZNZ</div>
+    <h2>4. After airline handover</h2>
+    <div class="pill-row">
+      <span class="pill">ZNZ receiving</span>
+      <span class="pill">Missing bags</span>
+    </div>
+    <p>
+      Zanzibar officers receive bags from airline custody into storage. If bags that were on a
+      handed-over manifest do not arrive, officers can flag them as missing.
+    </p>
+    <ul>
+      <li>Use the ZNZ receiving / airline-custody views in the phone app.</li>
+      <li><strong>Flag missing</strong> is available after handover — not on drafts.</li>
+      <li>Flagging opens (or refreshes) a <strong>NOT_RECEIVED</strong> exception for follow-up on the Exceptions board.</li>
+    </ul>
+    <div class="info-card">
+      <h3>Status checklist</h3>
+      <ul>
+        <li><strong>DRAFT</strong> — editable bag list</li>
+        <li><strong>FINALISED</strong> — locked; ready for airline</li>
+        <li><strong>HANDED_OVER</strong> — with airline; ZNZ can flag missing</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Reference</div>
+    <h2>5. Roles, rules &amp; tips</h2>
+    <div class="two-col">
+      <div>
+        <h3>Who can do what</h3>
+        <ul>
+          <li><strong>KIA_OFFICER / ADMIN</strong> — create, add/remove bags (draft), finalise, handover.</li>
+          <li><strong>ZNZ_OFFICER</strong> — receive after airline custody; flag missing on handed-over manifests.</li>
+          <li><strong>ADMIN / READONLY</strong> — view list and download PDF in the ops console.</li>
+        </ul>
+        <h3>Integrity rules</h3>
+        <ul>
+          <li>Only sealed bags with a seal number can join a manifest.</li>
+          <li>A bag cannot be on two manifests.</li>
+          <li>Only drafts can be edited; only finalised manifests can be handed over.</li>
+          <li>Missing flags require handover first.</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h3>Quick tips</h3>
+        <ul>
+          <li>Seal every bag before building the flight list.</li>
+          <li>Finalise only when the physical set matches the screen.</li>
+          <li>Print the PDF before airline counters close.</li>
+          <li>Watch Exceptions for NOT_RECEIVED after handover.</li>
+        </ul>
+        <h3>Related menus</h3>
+        <p class="muted">Bags · Exceptions · Reports (Manifests CSV) · Audits</p>
+      </div>
+    </div>
+    <div class="footer-note">
+      GoLyt — Go light. Explore more. · Manifests User Guide · Kilimanjaro → Zanzibar pilot · Confidential internal document
+    </div>
+  </section>
+</body>
+</html>
