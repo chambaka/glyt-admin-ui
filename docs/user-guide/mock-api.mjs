@@ -313,6 +313,15 @@ const server = http.createServer((req, res) => {
     ])
   }
 
+  if (path.startsWith('/api/v1/config/airlines')) {
+    return json(res, 200, [
+      { id: 1, code: 'PW', name: 'Precision Air', country: 'TZ', active: true, sortOrder: 10 },
+      { id: 2, code: 'TC', name: 'Air Tanzania', country: 'TZ', active: true, sortOrder: 20 },
+      { id: 3, code: 'CQ', name: 'Coastal Aviation', country: 'TZ', active: true, sortOrder: 30 },
+      { id: 4, code: 'KQ', name: 'Kenya Airways', country: 'TZ', active: true, sortOrder: 40 }
+    ])
+  }
+
   if (path === '/api/v1/facilities/locations') {
     return json(res, 200, [
       { id: 1, code: 'KIA', name: 'Kilimanjaro International Airport', locationType: 'AIRPORT', active: true },

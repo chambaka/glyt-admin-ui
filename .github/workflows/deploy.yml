@@ -168,7 +168,7 @@ jobs:
 
           echo "Creating deployment directories..."
 
-          mkdir -p \
+          sudo mkdir -p \
             "$APP_DIR" \
             "$BACKUP_DIR" \
             "$RELEASES_DIR" \
@@ -180,11 +180,11 @@ jobs:
 
           echo "Copying new release..."
 
-          cp -a "$TEMP_DIR/dist/." "$RELEASE_DIR/"
+          sudo cp -a "$TEMP_DIR/dist/." "$RELEASE_DIR/"
 
           if [ ! -f "$RELEASE_DIR/index.html" ]; then
             echo "ERROR: Release does not contain index.html."
-            rm -rf "$RELEASE_DIR"
+            sudo rm -rf "$RELEASE_DIR"
             exit 1
           fi
 
@@ -198,7 +198,7 @@ jobs:
 
             if [ -n "$CURRENT_REAL" ] && [ -d "$CURRENT_REAL" ]; then
               echo "Backing up current release..."
-              cp -a "$CURRENT_REAL" "$BACKUP_DIR/$TIMESTAMP"
+              sudo cp -a "$CURRENT_REAL" "$BACKUP_DIR/$TIMESTAMP"
               echo "Backup created: $BACKUP_DIR/$TIMESTAMP"
             else
               echo "No previous release found."
@@ -216,8 +216,8 @@ jobs:
 
           echo "Activating new release..."
 
-          ln -sfn "$RELEASE_DIR" "$APP_DIR/.current-next"
-          mv -Tf "$APP_DIR/.current-next" "$APP_DIR/current"
+          sudo ln -sfn "$RELEASE_DIR" "$APP_DIR/.current-next"
+          sudo mv -Tf "$APP_DIR/.current-next" "$APP_DIR/current"
 
           # ---------------------------------------------------
           # VERIFY ACTIVE RELEASE
@@ -232,6 +232,14 @@ jobs:
           readlink -f "$APP_DIR/current"
 
           # ---------------------------------------------------
+          # OWNERSHIP FOR NGINX
+          # ---------------------------------------------------
+
+          echo "Setting ownership..."
+
+          sudo chown -R www-data:www-data "$RELEASES_DIR" "$APP_DIR/current" || true
+
+          # ---------------------------------------------------
           # KEEP ONLY LAST 10 RELEASES
           # ---------------------------------------------------
 
@@ -239,7 +247,7 @@ jobs:
 
           mapfile -t old_releases < <(ls -1dt "$RELEASES_DIR"/*/ 2>/dev/null || true)
           if [ "${#old_releases[@]}" -gt 10 ]; then
-            rm -rf "${old_releases[@]:10}"
+            sudo rm -rf "${old_releases[@]:10}"
           fi
 
           # ---------------------------------------------------
@@ -250,7 +258,7 @@ jobs:
 
           mapfile -t old_backups < <(ls -1dt "$BACKUP_DIR"/*/ 2>/dev/null || true)
           if [ "${#old_backups[@]}" -gt 10 ]; then
-            rm -rf "${old_backups[@]:10}"
+            sudo rm -rf "${old_backups[@]:10}"
           fi
 
           # ---------------------------------------------------

@@ -83,12 +83,22 @@ export async function api(path, options = {}) {
 
   const response = await authFetch(path, { ...options, headers })
   const text = await response.text()
-  const body = text ? JSON.parse(text) : null
+  let body = null
+  if (text) {
+    try {
+      body = JSON.parse(text)
+    } catch {
+      if (!response.ok) {
+        throw new Error(text.trim() || 'Request failed')
+      }
+      throw new Error('Unexpected response from server.')
+    }
+  }
   if (!response.ok) {
     if (!session.user && (response.status === 401 || response.status === 403)) {
       throw new Error(expiredMessage)
     }
-    throw new Error(body?.error || 'Request failed')
+    throw new Error(body?.error || text.trim() || 'Request failed')
   }
   return body
 }

@@ -17,6 +17,7 @@ import ManifestsView from './views/ManifestsView.vue'
 import PaymentsView from './views/PaymentsView.vue'
 import FacilitiesView from './views/FacilitiesView.vue'
 import CatalogView from './views/CatalogView.vue'
+import AirlinesView from './views/AirlinesView.vue'
 import SupportView from './views/SupportView.vue'
 import AuditView from './views/AuditView.vue'
 
@@ -31,6 +32,7 @@ const titles = {
   payments: 'Payments',
   facilities: 'Facilities',
   catalog: 'Catalog',
+  configuration: 'Configuration',
   reports: 'Reports',
   audits: 'Audits',
   users: 'Users'
@@ -166,6 +168,7 @@ onBeforeUnmount(() => {
           <div class="nav-group">
             <button type="button" :class="{ on: session.page === 'facilities' }" @click="go('facilities')">Facilities</button>
             <button type="button" :class="{ on: session.page === 'catalog' }" @click="go('catalog')">Catalog</button>
+            <button type="button" :class="{ on: session.page === 'configuration' }" @click="go('configuration')">Configuration</button>
             <button type="button" :class="{ on: session.page === 'reports' }" @click="go('reports')">Reports</button>
             <button type="button" :class="{ on: session.page === 'audits' }" @click="go('audits')">Audits</button>
             <button
@@ -217,6 +220,7 @@ onBeforeUnmount(() => {
       <PaymentsView v-else-if="session.page === 'payments'" />
       <FacilitiesView v-else-if="session.page === 'facilities'" />
       <CatalogView v-else-if="session.page === 'catalog'" />
+      <AirlinesView v-else-if="session.page === 'configuration'" />
       <ReportsView v-else-if="session.page === 'reports'" />
       <AuditView v-else-if="session.page === 'audits'" />
       <UsersView v-else-if="session.page === 'users'" />

@@ -1,6 +1,6 @@
 <script setup>
-import { ref } from 'vue'
-import { downloadReport } from '../api'
+import { onMounted, ref } from 'vue'
+import { api, downloadReport } from '../api'
 import { notify } from '../dialog'
 
 const busy = ref('')
@@ -8,6 +8,7 @@ const from = ref('')
 const to = ref('')
 const status = ref('')
 const airline = ref('')
+const airlines = ref([])
 
 const reports = [
   { kind: 'movements', label: 'Movements', detail: 'Bag movement history across the corridor' },
@@ -17,6 +18,14 @@ const reports = [
   { kind: 'daily', label: 'Daily operations', detail: 'Day-by-day ops summary' },
   { kind: 'collections', label: 'Collections', detail: 'Payment and collection totals' }
 ]
+
+async function loadAirlines() {
+  try {
+    airlines.value = await api('/api/v1/config/airlines?active=true')
+  } catch {
+    airlines.value = []
+  }
+}
 
 async function download(kind) {
   busy.value = kind
@@ -33,6 +42,8 @@ async function download(kind) {
     busy.value = ''
   }
 }
+
+onMounted(loadAirlines)
 </script>
 
 <template>
@@ -57,7 +68,12 @@ async function download(kind) {
       </label>
       <label class="field">
         <span>Airline</span>
-        <input v-model="airline" placeholder="Manifest airline" />
+        <select v-model="airline">
+          <option value="">All airlines</option>
+          <option v-for="row in airlines" :key="row.id" :value="row.name">
+            {{ row.code }} — {{ row.name }}
+          </option>
+        </select>
       </label>
     </div>
   </div>
